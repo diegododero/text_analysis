@@ -14,7 +14,6 @@ for (i in 0:249){
   url <- paste0(url, "&offset=", i, "&genres=", genres)
   response          <- getURL(url)
   response          <- fromJSON(response)
-  #Tracks must have at most 8 minutes, ignore sets and mixes
   tracks <- rbind(tracks, select(response, title, created_at, duration))
 }
 
@@ -23,7 +22,6 @@ tracks_df <- data_frame(linenumber = 1:length, track = tracks$title)
 
 colnames(tracks) <- c("title", "created_at", "duration")
 write.csv(tracks, file = paste0(genres, ".csv"), quote = FALSE)
-?write.csv
 
 tidy_tracks <- tracks_df %>%
   group_by(track) 
